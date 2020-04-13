@@ -25,6 +25,7 @@ import MoreOptionsButton from './MoreOptionsButton';
 import RaiseHandButton from './RaiseHandButton';
 import ToggleCameraButton from './ToggleCameraButton';
 import styles from './styles';
+import ToggleSharedVideoButton from './ToggleSharedVideoButton';
 
 /**
  * The type of the React {@code Component} props of {@link OverflowMenu}.
@@ -133,6 +134,7 @@ class OverflowMenu extends PureComponent<Props, State> {
                 <MoreOptionsButton { ...moreOptionsButtonProps } />
                 <Collapsible collapsed = { !showMore }>
                     <ToggleCameraButton { ...buttonProps } />
+                    <ToggleSharedVideoButton { ...buttonProps } />
                     <TileViewButton { ...buttonProps } />
                     {
                         this.props._recordingEnabled
