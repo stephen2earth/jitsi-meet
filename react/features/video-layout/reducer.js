@@ -5,7 +5,8 @@ import { PersistenceRegistry } from '../base/storage';
 
 import {
     SCREEN_SHARE_PARTICIPANTS_UPDATED,
-    SET_TILE_VIEW
+    SET_TILE_VIEW,
+    SET_SHARE_VIEW
 } from './actionTypes';
 
 const DEFAULT_STATE = {
@@ -18,13 +19,15 @@ const DEFAULT_STATE = {
      * @public
      * @type {boolean}
      */
-    tileViewEnabled: false
+    tileViewEnabled: false,
+    shareViewEnabled: false
 };
 
 const STORE_NAME = 'features/video-layout';
 
 PersistenceRegistry.register(STORE_NAME, {
-    tileViewEnabled: true
+    tileViewEnabled: true,
+    shareViewEnabled: true
 });
 
 ReducerRegistry.register(STORE_NAME, (state = DEFAULT_STATE, action) => {
@@ -35,6 +38,12 @@ ReducerRegistry.register(STORE_NAME, (state = DEFAULT_STATE, action) => {
             screenShares: action.participantIds
         };
     }
+
+    case SET_SHARE_VIEW:
+        return {
+            ...state,
+            shareViewEnabled: action.enabled
+        };
 
     case SET_TILE_VIEW:
         return {

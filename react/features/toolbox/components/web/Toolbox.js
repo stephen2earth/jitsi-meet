@@ -59,7 +59,9 @@ import { toggleSharedVideo } from '../../../shared-video';
 import { SpeakerStats } from '../../../speaker-stats';
 import {
     TileViewButton,
-    toggleTileView
+    toggleTileView,
+    ShareViewButton,
+    toggleShareView
 } from '../../../video-layout';
 import {
     OverflowMenuVideoQualityItem,
@@ -130,6 +132,11 @@ type Props = {
      * Whether or not the tile view is enabled.
      */
     _tileViewEnabled: boolean,
+
+    /**
+     * Whether or not the tile view is enabled.
+     */
+    _shareViewEnabled: boolean,
 
     /**
      * Whether or not invite should be hidden, regardless of feature
@@ -250,6 +257,7 @@ class Toolbox extends Component<Props, State> {
         this._onToolbarToggleSharedVideo = this._onToolbarToggleSharedVideo.bind(this);
         this._onToolbarOpenLocalRecordingInfoDialog = this._onToolbarOpenLocalRecordingInfoDialog.bind(this);
         this._onShortcutToggleTileView = this._onShortcutToggleTileView.bind(this);
+        this._onShortcutToggleShareView = this._onShortcutToggleShareView.bind(this);
 
         this.state = {
             windowWidth: window.innerWidth
@@ -293,6 +301,11 @@ class Toolbox extends Component<Props, State> {
                 character: 'W',
                 exec: this._onShortcutToggleTileView,
                 helpDescription: 'toolbar.tileViewToggle'
+            },
+            this._shouldShowButton('shareview') && {
+                character: 'E',
+                exec: this._onShortcutToggleShareView,
+                helpDescription: 'toolbar.shareViewToggle'
             }
         ];
 
@@ -504,6 +517,17 @@ class Toolbox extends Component<Props, State> {
         this.props.dispatch(toggleTileView());
     }
 
+
+    /**
+     * Dispaches an action to toggle tile view.
+     *
+     * @private
+     * @returns {void}
+     */
+    _doToggleShareView() {
+        this.props.dispatch(toggleShareView());
+    }
+
     _onMouseOut: () => void;
 
     /**
@@ -610,6 +634,24 @@ class Toolbox extends Component<Props, State> {
             }));
 
         this._doToggleTileView();
+    }
+
+    _onShortcutToggleShareView: () => void;
+
+    /**
+     * Dispatches an action for toggling the share view.
+     *
+     * @private
+     * @returns {void}
+     */
+    _onShortcutToggleShareView() {
+        sendAnalytics(createShortcutEvent(
+            'toggle.shareview',
+            {
+                enable: !this.props._shareViewEnabled
+            }));
+
+        this._doToggleShareView();
     }
 
     _onShortcutToggleFullScreen: () => void;
@@ -1101,6 +1143,8 @@ class Toolbox extends Component<Props, State> {
                 );
             case 'tileview':
                 return <TileViewButton showLabel = { true } />;
+            case 'shareview':
+                return <ShareViewButton showLabel = { true } />;
             case 'localrecording':
                 return (
                     <OverflowMenuItem
@@ -1193,6 +1237,9 @@ class Toolbox extends Component<Props, State> {
         if (this._shouldShowButton('invite') && !_hideInviteButton) {
             buttonsRight.push('invite');
         }
+        if (this._shouldShowButton('shareview')) {
+            buttonsRight.push('shareview');
+        }
         if (this._shouldShowButton('tileview')) {
             buttonsRight.push('tileview');
         }
@@ -1272,6 +1319,8 @@ class Toolbox extends Component<Props, State> {
                                 this._onToolbarOpenLocalRecordingInfoDialog
                             } />
                     }
+                    { buttonsRight.indexOf('shareview') !== -1
+                        && <ShareViewButton /> }
                     { buttonsRight.indexOf('tileview') !== -1
                         && <TileViewButton /> }
                     { buttonsRight.indexOf('invite') !== -1
@@ -1376,6 +1425,7 @@ function _mapStateToProps(state) {
         _isGuest: state['features/base/jwt'].isGuest,
         _fullScreen: fullScreen,
         _tileViewEnabled: state['features/video-layout'].tileViewEnabled,
+        _shareViewEnabled: state['features/video-layout'].shareViewEnabled,
         _localParticipantID: localParticipant.id,
         _localRecState: localRecordingStates,
         _overflowMenuVisible: overflowMenuVisible,

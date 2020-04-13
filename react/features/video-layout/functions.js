@@ -13,7 +13,9 @@ declare var interfaceConfig: Object;
  * @returns {string}
  */
 export function getCurrentLayout(state: Object) {
-    if (shouldDisplayTileView(state)) {
+    if (shouldDisplayShareView(state)) {
+        return LAYOUTS.SHARE_VIEW;
+    } else if (shouldDisplayTileView(state)) {
         return LAYOUTS.TILE_VIEW;
     } else if (interfaceConfig.VERTICAL_FILMSTRIP) {
         return LAYOUTS.VERTICAL_FILMSTRIP_VIEW;
@@ -71,6 +73,30 @@ export function getTileViewGridDimensions(state: Object, maxColumns: number = ge
  * @returns {boolean} True if tile view should be displayed.
  */
 export function shouldDisplayTileView(state: Object = {}) {
+    return Boolean(
+        state['features/video-layout']
+            && state['features/video-layout'].tileViewEnabled
+            && (!state['features/etherpad']
+                || !state['features/etherpad'].editing)
+
+            // Truthy check is needed for interfaceConfig to prevent errors on
+            // mobile which does not have interfaceConfig. On web, tile view
+            // should never be enabled for filmstrip only mode.
+            && (typeof interfaceConfig === 'undefined'
+                || !interfaceConfig.filmStripOnly)
+            && !getPinnedParticipant(state)
+    );
+}
+
+/**
+ * Selector for determining if the UI layout should be in tile view. Tile view
+ * is determined by more than just having the tile view setting enabled, as
+ * one-on-one calls should not be in tile view, as well as etherpad editing.
+ *
+ * @param {Object} state - The redux state.
+ * @returns {boolean} True if tile view should be displayed.
+ */
+export function shouldDisplayShareView(state: Object = {}) {
     return Boolean(
         state['features/video-layout']
             && state['features/video-layout'].tileViewEnabled

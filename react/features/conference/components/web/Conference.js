@@ -60,6 +60,7 @@ const FULL_SCREEN_EVENTS = [
 const LAYOUT_CLASSNAMES = {
     [LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW]: 'horizontal-filmstrip',
     [LAYOUTS.TILE_VIEW]: 'tile-view',
+    [LAYOUTS.SHARE_VIEW]: 'share-view',
     [LAYOUTS.VERTICAL_FILMSTRIP_VIEW]: 'vertical-filmstrip'
 };
 

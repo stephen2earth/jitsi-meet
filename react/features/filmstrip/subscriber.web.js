@@ -47,6 +47,16 @@ StateListenerRegistry.register(
                 }));
             break;
         }
+        case LAYOUTS.SHARE_VIEW: {
+            const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
+
+            store.dispatch(setTileViewDimensions(
+                getTileViewGridDimensions(state), {
+                    clientHeight,
+                    clientWidth
+                }));
+            break;
+        }
         case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW:
             store.dispatch(setHorizontalViewDimensions(state['features/base/responsive-ui'].clientHeight));
             break;

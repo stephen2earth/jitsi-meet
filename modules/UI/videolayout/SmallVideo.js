@@ -755,7 +755,10 @@ export default class SmallVideo {
         const participantCount = getParticipantCount(state);
         let statsPopoverPosition, tooltipPosition;
 
-        if (currentLayout === LAYOUTS.TILE_VIEW) {
+        if (currentLayout === LAYOUTS.SHARE_VIEW) {
+            statsPopoverPosition = 'right top';
+            tooltipPosition = 'right';
+        } else if (currentLayout === LAYOUTS.TILE_VIEW) {
             statsPopoverPosition = 'right top';
             tooltipPosition = 'right';
         } else if (currentLayout === LAYOUTS.VERTICAL_FILMSTRIP_VIEW) {
@@ -922,6 +925,27 @@ export default class SmallVideo {
             break;
         }
         case LAYOUTS.TILE_VIEW: {
+            const state = APP.store.getState();
+            const { thumbnailSize } = state['features/filmstrip'].tileViewDimensions;
+
+            if (typeof thumbnailSize !== 'undefined') {
+                const { height, width } = thumbnailSize;
+                const avatarSize = height / 2;
+
+                this.$container.css({
+                    height: `${height}px`,
+                    'min-height': `${height}px`,
+                    'min-width': `${width}px`,
+                    width: `${width}px`
+                });
+                this.$avatar().css({
+                    height: `${avatarSize}px`,
+                    width: `${avatarSize}px`
+                });
+            }
+            break;
+        }
+        case LAYOUTS.SHARE_VIEW: {
             const state = APP.store.getState();
             const { thumbnailSize } = state['features/filmstrip'].tileViewDimensions;
 

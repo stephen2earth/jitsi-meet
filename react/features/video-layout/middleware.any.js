@@ -6,11 +6,11 @@ import {
 import { MiddlewareRegistry } from '../base/redux';
 import { SET_DOCUMENT_EDITING_STATUS, toggleDocument } from '../etherpad';
 
-import { SET_TILE_VIEW } from './actionTypes';
-import { setTileView } from './actions';
+import { SET_TILE_VIEW, SET_SHARE_VIEW } from './actionTypes';
+import { setTileView, setShareView } from './actions';
 
 /**
- * Middleware which intercepts actions and updates tile view related state.
+ * Middleware which intercepts actions and updates tile/share view related state.
  *
  * @param {Store} store - The redux store.
  * @returns {Function}
@@ -23,6 +23,7 @@ MiddlewareRegistry.register(store => next => action => {
 
         if (isPinning && tileViewEnabled) {
             store.dispatch(setTileView(false));
+            store.dispatch(setShareView(false));
         }
 
         break;
@@ -31,11 +32,28 @@ MiddlewareRegistry.register(store => next => action => {
     case SET_DOCUMENT_EDITING_STATUS:
         if (action.editing) {
             store.dispatch(setTileView(false));
+            store.dispatch(setShareView(false));
         }
 
         break;
 
     case SET_TILE_VIEW: {
+        const state = store.getState();
+
+        if (action.enabled) {
+            if (getPinnedParticipant(state)) {
+                store.dispatch(pinParticipant(null));
+            }
+
+            if (state['features/etherpad'].editing) {
+                store.dispatch(toggleDocument());
+            }
+        }
+
+        break;
+    }
+
+    case SET_SHARE_VIEW: {
         const state = store.getState();
 
         if (action.enabled) {

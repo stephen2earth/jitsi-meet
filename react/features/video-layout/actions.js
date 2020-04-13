@@ -4,7 +4,8 @@ import type { Dispatch } from 'redux';
 
 import {
     SCREEN_SHARE_PARTICIPANTS_UPDATED,
-    SET_TILE_VIEW
+    SET_TILE_VIEW,
+    SET_SHARE_VIEW
 } from './actionTypes';
 
 /**
@@ -53,5 +54,36 @@ export function toggleTileView() {
         const { tileViewEnabled } = getState()['features/video-layout'];
 
         dispatch(setTileView(!tileViewEnabled));
+    };
+}
+
+/**
+ * Creates a (redux) action which signals to set the UI layout to be shared view
+ * or not.
+ *
+ * @param {boolean} enabled - Whether or not share view should be shown.
+ * @returns {{
+ *     type: SET_SHARE_VIEW,
+ *     enabled: boolean
+ * }}
+ */
+export function setShareView(enabled: boolean) {
+    return {
+        type: SET_SHARE_VIEW,
+        enabled
+    };
+}
+
+/**
+ * Creates a (redux) action which signals either to exit share view if currently
+ * enabled or enter share view if currently disabled.
+ *
+ * @returns {Function}
+ */
+export function toggleShareView() {
+    return (dispatch: Dispatch<any>, getState: Function) => {
+        const { shareViewEnabled } = getState()['features/video-layout'];
+
+        dispatch(setTileView(!shareViewEnabled));
     };
 }

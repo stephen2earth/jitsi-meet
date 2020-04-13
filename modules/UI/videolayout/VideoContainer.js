@@ -395,7 +395,11 @@ export class VideoContainer extends LargeContainer {
         }
         const currentLayout = getCurrentLayout(APP.store.getState());
 
-        if (currentLayout === LAYOUTS.TILE_VIEW) {
+        if (currentLayout === LAYOUTS.SHARE_VIEW) {
+            // We don't need to resize the large video since it won't be displayed and we'll resize when returning back
+            // to stage view.
+            return;
+        } else if (currentLayout === LAYOUTS.TILE_VIEW) {
             // We don't need to resize the large video since it won't be displayed and we'll resize when returning back
             // to stage view.
             return;

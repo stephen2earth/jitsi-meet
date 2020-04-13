@@ -16,7 +16,7 @@ import { AudioRouteButton } from '../../../mobile/audio-mode';
 import { LiveStreamButton, RecordButton } from '../../../recording';
 import { RoomLockButton } from '../../../room-lock';
 import { ClosedCaptionButton } from '../../../subtitles';
-import { TileViewButton } from '../../../video-layout';
+import { TileViewButton, ShareViewButton } from '../../../video-layout';
 
 import HelpButton from '../HelpButton';
 
@@ -134,6 +134,7 @@ class OverflowMenu extends PureComponent<Props, State> {
                 <Collapsible collapsed = { !showMore }>
                     <ToggleCameraButton { ...buttonProps } />
                     <TileViewButton { ...buttonProps } />
+                    <ShareViewButton { ...buttonProps } />
                     {
                         this.props._recordingEnabled
                             && <RecordButton { ...buttonProps } />

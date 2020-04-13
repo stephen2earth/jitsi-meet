@@ -198,6 +198,17 @@ class Filmstrip extends Component <Props> {
             filmstripRemoteVideosContainerStyle.width = _filmstripWidth;
             break;
         }
+        case LAYOUTS.SHARE_VIEW: {
+            // The size of the side margins for each tile as set in CSS.
+            const { _columns, _rows, _filmstripWidth } = this.props;
+
+            if (_rows > _columns) {
+                remoteVideoContainerClassName += ' has-overflow';
+            }
+
+            filmstripRemoteVideosContainerStyle.width = _filmstripWidth;
+            break;
+        }
         }
 
         let remoteVideosWrapperClassName = 'filmstrip__videos';

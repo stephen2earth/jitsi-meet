@@ -35,6 +35,16 @@ MiddlewareRegistry.register(store => next => action => {
             }));
             break;
         }
+        case LAYOUTS.SHARE_VIEW: {
+            const { gridDimensions } = state['features/filmstrip'].tileViewDimensions;
+            const { clientHeight, clientWidth } = state['features/base/responsive-ui'];
+
+            store.dispatch(setTileViewDimensions(gridDimensions, {
+                clientHeight,
+                clientWidth
+            }));
+            break;
+        }
         case LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW:
             store.dispatch(setHorizontalViewDimensions(state['features/base/responsive-ui'].clientHeight));
             break;

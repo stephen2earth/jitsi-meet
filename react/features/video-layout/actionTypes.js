@@ -20,3 +20,4 @@ export const SCREEN_SHARE_PARTICIPANTS_UPDATED
  * }}
  */
 export const SET_TILE_VIEW = 'SET_TILE_VIEW';
+export const SET_SHARE_VIEW = 'SET_SHARE_VIEW';

@@ -193,7 +193,9 @@ export default class RemoteVideo extends SmallVideo {
         const currentLayout = getCurrentLayout(APP.store.getState());
         let remoteMenuPosition;
 
-        if (currentLayout === LAYOUTS.TILE_VIEW) {
+        if (currentLayout === LAYOUTS.SHARE_VIEW) {
+            remoteMenuPosition = 'left top';
+        } else if (currentLayout === LAYOUTS.TILE_VIEW) {
             remoteMenuPosition = 'left top';
         } else if (currentLayout === LAYOUTS.VERTICAL_FILMSTRIP_VIEW) {
             remoteMenuPosition = 'left bottom';
