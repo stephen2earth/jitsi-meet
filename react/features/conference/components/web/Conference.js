@@ -139,7 +139,9 @@ class Conference extends AbstractConference<Props, *> {
      */
     componentDidUpdate(prevProps) {
         if (this.props._shouldDisplayTileView
-            === prevProps._shouldDisplayTileView) {
+            === prevProps._shouldDisplayTileView
+            && this.props._shouldDisplayShareView
+            === prevProps._shouldDisplayShareView) {
             return;
         }
 

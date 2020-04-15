@@ -3,7 +3,7 @@
 import { getLocalParticipant } from '../base/participants';
 import { StateListenerRegistry } from '../base/redux';
 import { appendSuffix } from '../display-name';
-import { shouldDisplayTileView } from '../video-layout';
+import { shouldDisplayTileView, shouldDisplayShareView } from '../video-layout';
 
 declare var APP: Object;
 declare var interfaceConfig: Object;
@@ -16,6 +16,16 @@ StateListenerRegistry.register(
     /* selector */ state => shouldDisplayTileView(state),
     /* listener */ displayTileView => {
         APP.API.notifyTileViewChanged(displayTileView);
+    });
+
+/**
+ * StateListenerRegistry provides a reliable way of detecting changes to
+ * preferred layout state and dispatching additional actions.
+ */
+StateListenerRegistry.register(
+    /* selector */ state => shouldDisplayShareView(state),
+    /* listener */ displayShareView => {
+        APP.API.notifyShareViewChanged(displayShareView);
     });
 
 StateListenerRegistry.register(

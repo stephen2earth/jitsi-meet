@@ -84,6 +84,6 @@ export function toggleShareView() {
     return (dispatch: Dispatch<any>, getState: Function) => {
         const { shareViewEnabled } = getState()['features/video-layout'];
 
-        dispatch(setTileView(!shareViewEnabled));
+        dispatch(setShareView(!shareViewEnabled));
     };
 }

@@ -13,7 +13,7 @@ import {
 } from '../base/participants';
 import { MiddlewareRegistry } from '../base/redux';
 import { setFilmstripVisible } from '../filmstrip';
-import { setTileView } from '../video-layout';
+import { setTileView, setShareView } from '../video-layout';
 
 import { FOLLOW_ME_COMMAND } from './constants';
 import logger from './logger';
@@ -134,6 +134,10 @@ function _onFollowMeCommand(attributes = {}, id, store) {
 
     if (oldState.tileViewEnabled !== attributes.tileViewEnabled) {
         store.dispatch(setTileView(attributes.tileViewEnabled === 'true'));
+    }
+
+    if (oldState.shareViewEnabled !== attributes.shareViewEnabled) {
+        store.dispatch(setShareView(attributes.shareViewEnabled === 'true'));
     }
 
     // For now gate etherpad checks behind a web-app check to be extra safe

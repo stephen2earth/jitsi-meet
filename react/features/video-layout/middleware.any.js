@@ -16,14 +16,19 @@ import { setTileView, setShareView } from './actions';
  * @returns {Function}
  */
 MiddlewareRegistry.register(store => next => action => {
+    const { tileViewEnabled, shareViewEnabled } = store.getState()['features/video-layout'];
+
     switch (action.type) {
     case PIN_PARTICIPANT: {
         const isPinning = Boolean(action.participant.id);
-        const { tileViewEnabled } = store.getState()['features/video-layout'];
 
-        if (isPinning && tileViewEnabled) {
-            store.dispatch(setTileView(false));
-            store.dispatch(setShareView(false));
+        if (isPinning) {
+            if (tileViewEnabled) {
+                store.dispatch(setTileView(false));
+            }
+            if (shareViewEnabled) {
+                store.dispatch(setShareView(false));
+            }
         }
 
         break;
@@ -48,6 +53,10 @@ MiddlewareRegistry.register(store => next => action => {
             if (state['features/etherpad'].editing) {
                 store.dispatch(toggleDocument());
             }
+
+            if (shareViewEnabled) {
+                store.dispatch(setShareView(false));
+            }
         }
 
         break;
@@ -63,6 +72,10 @@ MiddlewareRegistry.register(store => next => action => {
 
             if (state['features/etherpad'].editing) {
                 store.dispatch(toggleDocument());
+            }
+
+            if (tileViewEnabled) {
+                store.dispatch(setTileView(false));
             }
         }
 

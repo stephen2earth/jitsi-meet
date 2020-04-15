@@ -2,7 +2,8 @@
 
 import { StateListenerRegistry, equals } from '../base/redux';
 import Filmstrip from '../../../modules/UI/videolayout/Filmstrip';
-import { getCurrentLayout, getTileViewGridDimensions, shouldDisplayTileView, LAYOUTS } from '../video-layout';
+import { getCurrentLayout, getTileViewGridDimensions,
+    shouldDisplayTileView, shouldDisplayShareView, LAYOUTS } from '../video-layout';
 
 import { setHorizontalViewDimensions, setTileViewDimensions } from './actions';
 
@@ -14,7 +15,7 @@ StateListenerRegistry.register(
     /* listener */ (numberOfParticipants, store) => {
         const state = store.getState();
 
-        if (shouldDisplayTileView(state)) {
+        if (shouldDisplayTileView(state) || shouldDisplayShareView(state)) {
             const gridDimensions = getTileViewGridDimensions(state);
             const oldGridDimensions = state['features/filmstrip'].tileViewDimensions.gridDimensions;
             const { clientHeight, clientWidth } = state['features/base/responsive-ui'];

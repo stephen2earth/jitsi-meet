@@ -803,6 +803,21 @@ class API {
     }
 
     /**
+     * Notify external application (if API is enabled) that tile view has been
+     * entered or exited.
+     *
+     * @param {string} enabled - True if share view is currently displayed, false
+     * otherwise.
+     * @returns {void}
+     */
+    notifyShareViewChanged(enabled: boolean) {
+        this._sendEvent({
+            name: 'share-view-changed',
+            enabled
+        });
+    }
+
+    /**
      * Disposes the allocated resources.
      *
      * @returns {void}

@@ -7,7 +7,8 @@ import Filmstrip from '../../../modules/UI/videolayout/Filmstrip';
 import {
     getCurrentLayout,
     LAYOUTS,
-    shouldDisplayTileView
+    shouldDisplayTileView,
+    shouldDisplayShareView
 } from '../video-layout';
 
 import { setHorizontalViewDimensions, setTileViewDimensions } from './actions';
@@ -54,7 +55,7 @@ MiddlewareRegistry.register(store => next => action => {
     case SET_TILE_VIEW_DIMENSIONS: {
         const state = store.getState();
 
-        if (shouldDisplayTileView(state)) {
+        if (shouldDisplayTileView(state) || shouldDisplayShareView(state)) {
             const { width, height } = state['features/filmstrip'].tileViewDimensions.thumbnailSize;
             const qualityLevel = getNearestReceiverVideoQualityLevel(height);
 

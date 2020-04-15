@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { NotificationsContainer } from '../../notifications/components';
 
 import { shouldDisplayNotifications } from '../functions';
-import { shouldDisplayTileView } from '../../video-layout';
+import { shouldDisplayTileView, shouldDisplayShareView } from '../../video-layout';
 
 /**
  * The type of the React {@code Component} props of {@link AbstractLabels}.
@@ -34,7 +34,15 @@ export type AbstractProps = {
      * @protected
      * @type {boolean}
      */
-    _shouldDisplayTileView: boolean
+    _shouldDisplayTileView: boolean,
+
+    /**
+     * Whether or not the layout should change to support tile view mode.
+     *
+     * @protected
+     * @type {boolean}
+     */
+    _shouldDisplayShareView: boolean
 };
 
 /**
@@ -77,6 +85,7 @@ export function abstractMapStateToProps(state: Object) {
     return {
         _notificationsVisible: shouldDisplayNotifications(state),
         _room: state['features/base/conference'].room,
-        _shouldDisplayTileView: shouldDisplayTileView(state)
+        _shouldDisplayTileView: shouldDisplayTileView(state),
+        _shouldDisplayShareView: shouldDisplayShareView(state)
     };
 }

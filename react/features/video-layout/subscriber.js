@@ -12,7 +12,7 @@ import {
 } from '../base/participants';
 import { StateListenerRegistry, equals } from '../base/redux';
 import { selectParticipant } from '../large-video';
-import { shouldDisplayTileView } from './functions';
+import { shouldDisplayTileView, shouldDisplayShareView } from './functions';
 import { setParticipantsWithScreenShare } from './actions';
 
 declare var APP: Object;
@@ -30,6 +30,28 @@ StateListenerRegistry.register(
         dispatch(selectParticipant());
 
         if (!displayTileView) {
+            dispatch(
+                setMaxReceiverVideoQuality(VIDEO_QUALITY_LEVELS.HIGH));
+
+            if (_getAutoPinSetting()) {
+                _updateAutoPinnedParticipant(store);
+            }
+        }
+    }
+);
+
+/**
+ * StateListenerRegistry provides a reliable way of detecting changes to
+ * preferred layout state and dispatching additional actions.
+ */
+StateListenerRegistry.register(
+    /* selector */ state => shouldDisplayShareView(state),
+    /* listener */ (displayShareView, store) => {
+        const { dispatch } = store;
+
+        dispatch(selectParticipant());
+
+        if (!displayShareView) {
             dispatch(
                 setMaxReceiverVideoQuality(VIDEO_QUALITY_LEVELS.HIGH));
 

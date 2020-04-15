@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 
 import { connect } from '../../base/redux';
-import { shouldDisplayTileView } from '../../video-layout';
+import { shouldDisplayTileView, shouldDisplayShareView } from '../../video-layout';
 
 /**
  * Constants to describe the dimensions of the video. Landscape videos
@@ -31,6 +31,14 @@ type Props = {
      * @type {boolean}
      */
     _shouldDisplayTileView: boolean,
+
+   /**
+     * Whether or not the layout should change to support tile view mode.
+     *
+     * @protected
+     * @type {boolean}
+     */
+    _shouldDisplayShareView: boolean,
 
     /**
      * Additional CSS class names to add to the root of the component.
@@ -94,9 +102,9 @@ export class LargeVideoBackground extends Component<Props> {
      * @returns {void}
      */
     componentDidMount() {
-        const { _shouldDisplayTileView, hidden, videoElement } = this.props;
+        const { _shouldDisplayTileView, _shouldDisplayShareView, hidden, videoElement } = this.props;
 
-        if (videoElement && !hidden && !_shouldDisplayTileView) {
+        if (videoElement && !hidden && !_shouldDisplayTileView && !_shouldDisplayShareView) {
             this._updateCanvas();
             this._setUpdateCanvasInterval();
         }
@@ -108,9 +116,11 @@ export class LargeVideoBackground extends Component<Props> {
      * @inheritdoc
      */
     componentDidUpdate(prevProps: Props) {
-        const wasCanvasUpdating = !prevProps.hidden && !prevProps._shouldDisplayTileView && prevProps.videoElement;
+        const wasCanvasUpdating = !prevProps.hidden && prevProps.videoElement
+         && !prevProps._shouldDisplayTileView && !prevProps._shouldDisplayShareView;
         const shouldCanvasUpdating
-            = !this.props.hidden && !this.props._shouldDisplayTileView && this.props.videoElement;
+            = !this.props.hidden && this.props.videoElement
+             && !this.props._shouldDisplayTileView && !this.props._shouldDisplayShareView;
 
         if (wasCanvasUpdating !== shouldCanvasUpdating) {
             if (shouldCanvasUpdating) {
@@ -257,7 +267,8 @@ export class LargeVideoBackground extends Component<Props> {
  */
 function _mapStateToProps(state) {
     return {
-        _shouldDisplayTileView: shouldDisplayTileView(state)
+        _shouldDisplayTileView: shouldDisplayTileView(state),
+        _shouldDisplayShareView: shouldDisplayShareView(state)
     };
 }
 

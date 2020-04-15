@@ -99,7 +99,7 @@ export function shouldDisplayTileView(state: Object = {}) {
 export function shouldDisplayShareView(state: Object = {}) {
     return Boolean(
         state['features/video-layout']
-            && state['features/video-layout'].tileViewEnabled
+            && state['features/video-layout'].shareViewEnabled
             && (!state['features/etherpad']
                 || !state['features/etherpad'].editing)
 

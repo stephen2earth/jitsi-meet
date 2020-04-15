@@ -254,10 +254,12 @@ class Conference extends AbstractConference<Props, *> {
             _largeVideoParticipantId,
             _reducedUI,
             _shouldDisplayTileView,
+            _shouldDisplayShareView,
             _toolboxVisible
         } = this.props;
         const showGradient = _toolboxVisible;
-        const applyGradientStretching = _filmstripVisible && isNarrowAspectRatio(this) && !_shouldDisplayTileView;
+        const applyGradientStretching = _filmstripVisible && isNarrowAspectRatio(this)
+         && !_shouldDisplayTileView && !_shouldDisplayShareView;
 
         if (_reducedUI) {
             return this._renderContentForReducedUi();
@@ -268,7 +270,7 @@ class Conference extends AbstractConference<Props, *> {
                 {/*
                   * The LargeVideo is the lowermost stacking layer.
                   */
-                    _shouldDisplayTileView
+                    _shouldDisplayTileView || _shouldDisplayShareView
                         ? <TileView onClick = { this._onClick } />
                         : <LargeVideo onClick = { this._onClick } />
                 }
@@ -313,7 +315,8 @@ class Conference extends AbstractConference<Props, *> {
 
                     <Captions onPress = { this._onClick } />
 
-                    { _shouldDisplayTileView || <DisplayNameLabel participantId = { _largeVideoParticipantId } /> }
+                    { _shouldDisplayTileView || _shouldDisplayShareView
+                         || <DisplayNameLabel participantId = { _largeVideoParticipantId } /> }
 
                     <LonelyMeetingExperience />
 
@@ -330,7 +333,7 @@ class Conference extends AbstractConference<Props, *> {
                       * React Components depict the videos of the conference's
                       * participants.
                       */
-                        _shouldDisplayTileView ? undefined : <Filmstrip />
+                        _shouldDisplayTileView || _shouldDisplayShareView ? undefined : <Filmstrip />
                     }
                 </SafeAreaView>
 

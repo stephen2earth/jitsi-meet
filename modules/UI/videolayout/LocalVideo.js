@@ -9,7 +9,7 @@ import { JitsiTrackEvents } from '../../../react/features/base/lib-jitsi-meet';
 import { VideoTrack } from '../../../react/features/base/media';
 import { updateSettings } from '../../../react/features/base/settings';
 import { getLocalVideoTrack } from '../../../react/features/base/tracks';
-import { shouldDisplayTileView } from '../../../react/features/video-layout';
+import { shouldDisplayTileView, shouldDisplayShareView } from '../../../react/features/video-layout';
 /* eslint-enable no-unused-vars */
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
@@ -247,9 +247,10 @@ export default class LocalVideo extends SmallVideo {
             this.container.parentElement.removeChild(this.container);
         }
 
-        const appendTarget = shouldDisplayTileView(APP.store.getState())
-            ? document.getElementById('localVideoTileViewContainer')
-            : document.getElementById('filmstripLocalVideoThumbnail');
+        const appendTarget
+         = shouldDisplayTileView(APP.store.getState()) || shouldDisplayShareView(APP.store.getState())
+             ? document.getElementById('localVideoTileViewContainer')
+             : document.getElementById('filmstripLocalVideoThumbnail');
 
         appendTarget && appendTarget.appendChild(this.container);
         this._updateVideoElement();
